@@ -1,7 +1,7 @@
 package com.company;
 
-        import java.util.InputMismatchException;
-        import java.util.Scanner;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 public class Menu {
     private Scanner input = new Scanner(System.in);
@@ -34,12 +34,15 @@ public class Menu {
                     myLibrary.checkOut();
                     break;
                 case 5:
-                    //checkIn();
+                    input.nextLine();
+                    myLibrary.checkIn();
                     break;
                 case 6:
+                    input.nextLine();
                     myLibrary.viewCheckOutGames("out");
                     break;
                 case 7:
+                    System.out.println("Thank You For Your Visit. See You Next Time!");
                     System.exit(0);
                     break;
                 default:

@@ -1,5 +1,6 @@
 package com.company;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -76,6 +77,7 @@ public class Library {
                 int index = input.nextInt();
                 if (index > games.size() || index <= 0) {
                     System.out.println("Invalid Entry! Please Type Again!");
+                    input.nextLine();
                     removeGame();
                 } else {
                     System.out.println(games.get(index - 1).getTitle() + " has been removed" + "\n");
@@ -83,6 +85,7 @@ public class Library {
                 }
             } catch (InputMismatchException exception) {
                 System.out.println("Invalid Entry with Wrong Type! Please enter Integers!");
+                input.nextLine();
                 removeGame();
             }
         }
@@ -97,11 +100,12 @@ public class Library {
         } else {
             System.out.println("Here is a list of games available, Please choose from following to proceed check out");
             viewGamesLibrary("checkout");
-            int index = input.nextInt();
             try {
+                int index = input.nextInt();
                 checkOutGame(index);
             } catch (InputMismatchException exception) {
                 System.out.println("Invalid Input Type! Please Type In Integers!");
+                input.nextLine();
                 checkOut();
             }
         }
@@ -131,8 +135,48 @@ public class Library {
         }
     }
 
-    public void checkInGame(int index) {
-        viewCheckOutGames("in");
+    public void checkIn() {
+        if (checkOutGames.isEmpty()) {
+            System.out.println("There are no games currently checked out");
+            menu.startMenu();
+        } else {
+            System.out.println("What game are you going to check-in? ");
+            viewCheckOutGames("check-in");
+            try {
+                int index = input.nextInt();
+                checkInGame(index);
+            } catch (InputMismatchException exception) {
+                System.out.println("Invalid Input Type! Please Type In Integers!");
+                input.nextLine();
+                checkIn();
+            }
+        }
+        input.nextLine();
+        menu.startMenu();
 
+    }
+
+    public void checkInGame(int index) {
+        try {
+            Game gameToCheckIn = checkOutGames.get(index - 1);
+            Calendar calendar = Calendar.getInstance();
+            try {
+                if (dateFormat.parse(dateFormat.format(calendar.getTime())).before(dateFormat.parse(gameToCheckIn.getDueDay()))) {
+                    System.out.println("Thanks for Turning Your Game On Time!");
+                } else {
+                    System.out.println("Shame On You! You Were Late On Turning Your Game!!");
+                }
+            } catch (ParseException pe) {
+                // we will leave empty since we really can't do anything if catches this exception
+            }
+            gameToCheckIn.setDueDay("");
+            // remove from library and add it to the checkout list
+            games.add(gameToCheckIn);
+            checkOutGames.remove(index - 1);
+            System.out.println(gameToCheckIn.getTitle() + " has been checked In successfully! \n");
+        } catch (IndexOutOfBoundsException exception) {
+            System.out.println("Please Enter a Valid Number within the size! Try Again!");
+            checkIn();
+        }
     }
 }
