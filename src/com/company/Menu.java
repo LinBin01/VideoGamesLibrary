@@ -1,10 +1,11 @@
 package com.company;
 
-import java.util.InputMismatchException;
-import java.util.Scanner;
+        import java.util.InputMismatchException;
+        import java.util.Scanner;
 
 public class Menu {
     private Scanner input = new Scanner(System.in);
+    private Library myLibrary = new Library(this);
 
     public void startMenu() {
         System.out.println("Choose an Option From the Following" +
@@ -15,21 +16,28 @@ public class Menu {
             switch (input.nextInt()) {
                 case 1:
                     //addGame();
+                    input.nextLine();
+                    System.out.println("You have chosen to add a game!");
+                    myLibrary.addGame();
                     break;
                 case 2:
-                    //removeGame();
+                    myLibrary.removeGame();
                     break;
                 case 3:
                     //viewGames();
+                    input.nextLine();
+                    myLibrary.viewGamesLibrary("in");
                     break;
                 case 4:
-                    //checkOut();
+                    // checkOut();
+                    input.nextLine();
+                    myLibrary.checkOut();
                     break;
                 case 5:
                     //checkIn();
                     break;
                 case 6:
-                    //viewCheckOuts();
+                    myLibrary.viewCheckOutGames("out");
                     break;
                 case 7:
                     System.exit(0);
@@ -47,4 +55,4 @@ public class Menu {
         }
     }
 
-    }
+}
